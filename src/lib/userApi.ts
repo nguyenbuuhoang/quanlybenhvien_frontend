@@ -2,7 +2,7 @@ import apiClient from "@/lib/axios";
 
 export async function getCurrentUser() {
   try {
-    const res = await apiClient.get("/api/auth/me");
+    const res = await apiClient.get(`/api/auth/me`);
     console.log("getCurrentUser response:", res.data);
     
     if (res.data && res.data.success !== false) {

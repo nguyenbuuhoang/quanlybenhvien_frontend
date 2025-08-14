@@ -15,7 +15,7 @@ export default function Page() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const authStatus = isAuthenticated();
+      const authStatus = await isAuthenticated();
       setIsAuth(authStatus);
       
       if (authStatus) {

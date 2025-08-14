@@ -21,20 +21,20 @@ type HeroSliderProps = {
 export default function HeroSlider({
   slides = [
     {
-      src: "/benh-vien-mat-tmh-rhm-an-giang-1739439979-fmvo.jpg",
+      src: "/sliders/benh-vien-mat-tmh-rhm-an-giang-1739439979-fmvo.jpg",
       alt: "Bệnh viện Mắt-TMH-RHM An Giang",
       width: 1920,
       height: 1080,
       priority: true,
     },
     {
-      src: "/benh-vien-mat-tmh-rhm-an-giang-1750151330-nrphb.jpg", 
+      src: "/sliders/benh-vien-mat-tmh-rhm-an-giang-1750151330-nrphb.jpg", 
       alt: "Lịch làm việc",
       width: 1920,
       height: 1080,
     },
     {
-      src: "/benh-vien-moi-1739926798-hruj0.png",
+      src: "/sliders/benh-vien-moi-1739926798-hruj0.png",
       alt: "Hình ảnh bệnh viện mới", 
       width: 1920,
       height: 1080,

@@ -10,8 +10,8 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    const checkAuth = () => {
-      const authStatus = isAuthenticated();
+    const checkAuth = async () => {
+      const authStatus = await isAuthenticated();
       if (!authStatus) {
         router.replace("/login");
       } else {

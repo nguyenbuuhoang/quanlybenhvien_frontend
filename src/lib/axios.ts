@@ -45,8 +45,11 @@ apiClient.interceptors.response.use(
         const refreshToken = localStorage.getItem('refreshToken');
         
         if (refreshToken) {
-          // Refresh token
-          const refreshResponse = await axios.post(`${API_URL}/api/auth/refresh`, {
+          // Refresh token - dùng axios instance riêng để tránh loop
+          const refreshResponse = await axios.create({
+            baseURL: API_URL,
+            timeout: 10000,
+          }).post(`/api/auth/refresh`, {
             refreshToken: refreshToken
           });
 

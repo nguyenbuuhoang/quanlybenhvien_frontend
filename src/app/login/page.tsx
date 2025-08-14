@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import axios from "axios"
+import apiClient from "@/lib/axios"
 import { API_URL } from "@/lib/axios"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -48,13 +48,9 @@ export default function LoginPage() {
     setErrors({})
 
     try {
-      const res = await axios.post(`${API_URL}/api/auth/login`, {
+      const res = await apiClient.post(`${API_URL}/api/auth/login`, {
         usernameOrEmail: formData.emailOrUsername,
         password: formData.password,
-      }, {
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
 
       const data = res.data;
