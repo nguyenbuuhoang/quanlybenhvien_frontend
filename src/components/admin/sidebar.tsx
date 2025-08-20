@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { User, Shield, Menu, X, Settings, LayoutDashboard as Dashboard } from "lucide-react"
+import { User, Shield, Users , Menu, X, Settings, LayoutDashboard as Dashboard } from "lucide-react"
 
 const menuItems = [
   {
@@ -26,6 +26,12 @@ const menuItems = [
     href: "/admin/roles",
     icon: Shield,
     description: "Quản lý vai trò và quyền hạn",
+  },
+  {
+    title: "Quản lý Nhân viên",
+    href: "/admin/employees",
+    icon: Users,
+    description: "Quản lý danh sách nhân viên",
   },
 ]
 

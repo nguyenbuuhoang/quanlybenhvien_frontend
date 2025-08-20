@@ -60,7 +60,7 @@ interface ActionData {
   color?: string
 }
 
-export function RoleManagement() {
+function RoleManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [roles, setRoles] = useState<Role[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +92,6 @@ export function RoleManagement() {
 
   const { toast } = useToast();
 
-  // Lấy data thật từ API khi mount
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);

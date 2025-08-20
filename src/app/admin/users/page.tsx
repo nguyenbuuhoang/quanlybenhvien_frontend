@@ -95,6 +95,7 @@ export default function AdminPage() {
     })
     const [updateSubmitting, setUpdateSubmitting] = useState(false)
     const [updateError, setUpdateError] = useState("")
+    // Mở dialog cập nhật, truyền dữ liệu người dùng vào state
     const handleOpenUpdate = (user: any) => {
       setUpdateForm({
         id: user.id,
@@ -102,9 +103,9 @@ export default function AdminPage() {
         email: user.email || "",
         roleId: user.roleId || user.role?.id || 1,
         status: user.status || "active",
-      })
-      setUpdateError("")
-      setTimeout(() => setUpdateDialog(true), 100)
+      });
+      setUpdateError("");
+      setUpdateDialog(true);
     }
 
     const handleUpdateUser = async (e: React.FormEvent) => {
@@ -278,7 +279,7 @@ export default function AdminPage() {
         </CardContent>
       </Card>
 
-      <Card className="animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-200">
+  <Card className="animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-200">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -294,6 +295,7 @@ export default function AdminPage() {
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50/50">
+                  <TableHead>STT</TableHead>
                   <TableHead>Tên</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Vai trò</TableHead>
@@ -307,9 +309,9 @@ export default function AdminPage() {
                   filteredUsers.map((user, index) => (
                     <TableRow
                       key={user.id}
-                      className="hover:bg-gray-50 transition-all duration-200 animate-in fade-in-0 slide-in-from-left-4"
-                      style={{ animationDelay: `${index * 50}ms` }}
+                      className="hover:bg-gray-50 transition-all duration-200"
                     >
+                      <TableCell>{index + 1}</TableCell>
                       <TableCell className="font-medium">{user.fullname || user.username || ""}</TableCell>
                       <TableCell className="text-gray-600">{user.email || ""}</TableCell>
                       <TableCell>{getRoleBadge(user.role?.name || "")}</TableCell>
@@ -333,60 +335,6 @@ export default function AdminPage() {
                               <Edit className="mr-2 h-4 w-4" />
                               Cập nhật
                             </DropdownMenuItem>
-                            {/* Update User Dialog */}
-                            <Dialog open={updateDialog} onOpenChange={setUpdateDialog}>
-                              <DialogContent className="max-w-md">
-                                <DialogHeader>
-                                  <DialogTitle>Cập nhật người dùng</DialogTitle>
-                                  <DialogDescription>Cập nhật thông tin người dùng.</DialogDescription>
-                                </DialogHeader>
-                                <form onSubmit={handleUpdateUser} className="space-y-4">
-                                  <div>
-                                    <label className="block text-sm font-medium mb-1">Họ tên</label>
-                                    <Input required value={updateForm.fullname} onChange={e => setUpdateForm(f => ({ ...f, fullname: e.target.value }))} />
-                                  </div>
-                                  <div>
-                                    <label className="block text-sm font-medium mb-1">Email</label>
-                                    <Input required type="email" value={updateForm.email} onChange={e => setUpdateForm(f => ({ ...f, email: e.target.value }))} />
-                                  </div>
-                                  <div>
-                                    <label className="block text-sm font-medium mb-1">Vai trò</label>
-                                    <Select value={updateForm.roleId?.toString()} onValueChange={val => setUpdateForm(f => ({ ...f, roleId: Number(val) }))}>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Chọn vai trò" />
-                                      </SelectTrigger>
-                                      <SelectContent>
-                                        {roles.map(role => (
-                                          <SelectItem key={role.id} value={role.id.toString()}>{role.name}</SelectItem>
-                                        ))}
-                                      </SelectContent>
-                                    </Select>
-                                  </div>
-                                  <div>
-                                    <label className="block text-sm font-medium mb-1">Trạng thái</label>
-                                    <Select value={updateForm.status} onValueChange={val => setUpdateForm(f => ({ ...f, status: val }))}>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Chọn trạng thái" />
-                                      </SelectTrigger>
-                                      <SelectContent>
-                                        {statusOptions.map(opt => (
-                                          <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-                                        ))}
-                                      </SelectContent>
-                                    </Select>
-                                  </div>
-                                  {updateError && <div className="text-red-600 text-sm">{updateError}</div>}
-                                  <DialogFooter>
-                                    <Button type="submit" disabled={updateSubmitting} className="bg-blue-600 w-full mt-2">
-                                      {updateSubmitting ? "Đang lưu..." : "Lưu thay đổi"}
-                                    </Button>
-                                    <DialogClose asChild>
-                                      <Button type="button" variant="outline" className="w-full">Hủy</Button>
-                                    </DialogClose>
-                                  </DialogFooter>
-                                </form>
-                              </DialogContent>
-                            </Dialog>
                             <DropdownMenuItem
                               className="cursor-pointer text-red-600 focus:text-red-600 hover:bg-red-50 transition-colors"
                               onSelect={e => { e.preventDefault(); handleOpenDelete(user.id); }}
@@ -394,24 +342,6 @@ export default function AdminPage() {
                               <Trash2 className="mr-2 h-4 w-4" />
                               Xóa
                             </DropdownMenuItem>
-                            {/* Delete User Dialog */}
-                            <Dialog open={deleteDialog} onOpenChange={setDeleteDialog}>
-                              <DialogContent className="max-w-sm">
-                                <DialogHeader>
-                                  <DialogTitle>Xác nhận xóa người dùng</DialogTitle>
-                                  <DialogDescription>Bạn có chắc chắn muốn xóa người dùng này? Thao tác này không thể hoàn tác.</DialogDescription>
-                                </DialogHeader>
-                                {deleteError && <div className="text-red-600 text-sm mb-2">{deleteError}</div>}
-                                <DialogFooter>
-                                  <Button onClick={handleDeleteUser} disabled={deleteSubmitting} className="bg-red-600 w-full">
-                                    {deleteSubmitting ? "Đang xóa..." : "Xác nhận xóa"}
-                                  </Button>
-                                  <DialogClose asChild>
-                                    <Button type="button" variant="outline" className="w-full">Hủy</Button>
-                                  </DialogClose>
-                                </DialogFooter>
-                              </DialogContent>
-                            </Dialog>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>
@@ -430,6 +360,78 @@ export default function AdminPage() {
               </TableBody>
             </Table>
           </div>
+          {/* Dialog cập nhật người dùng */}
+          <Dialog open={updateDialog} onOpenChange={setUpdateDialog}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Cập nhật người dùng</DialogTitle>
+                <DialogDescription>Cập nhật thông tin người dùng.</DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleUpdateUser} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Họ tên</label>
+                  <Input required value={updateForm.fullname} onChange={e => setUpdateForm(f => ({ ...f, fullname: e.target.value }))} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Email</label>
+                  <Input required type="email" value={updateForm.email} onChange={e => setUpdateForm(f => ({ ...f, email: e.target.value }))} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Vai trò</label>
+                  <Select value={updateForm.roleId?.toString()} onValueChange={val => setUpdateForm(f => ({ ...f, roleId: Number(val) }))}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Chọn vai trò" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {roles.map(role => (
+                        <SelectItem key={role.id} value={role.id.toString()}>{role.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Trạng thái</label>
+                  <Select value={updateForm.status} onValueChange={val => setUpdateForm(f => ({ ...f, status: val }))}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Chọn trạng thái" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {statusOptions.map(opt => (
+                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                {updateError && <div className="text-red-600 text-sm">{updateError}</div>}
+                <DialogFooter>
+                  <Button type="submit" disabled={updateSubmitting} className="bg-blue-600 w-full mt-2">
+                    {updateSubmitting ? "Đang lưu..." : "Lưu thay đổi"}
+                  </Button>
+                  <DialogClose asChild>
+                    <Button type="button" variant="outline" className="w-full">Hủy</Button>
+                  </DialogClose>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
+          {/* Dialog xóa người dùng */}
+          <Dialog open={deleteDialog} onOpenChange={setDeleteDialog}>
+            <DialogContent className="max-w-sm">
+              <DialogHeader>
+                <DialogTitle>Xác nhận xóa người dùng</DialogTitle>
+                <DialogDescription>Bạn có chắc chắn muốn xóa người dùng này? Thao tác này không thể hoàn tác.</DialogDescription>
+              </DialogHeader>
+              {deleteError && <div className="text-red-600 text-sm mb-2">{deleteError}</div>}
+              <DialogFooter>
+                <Button onClick={handleDeleteUser} disabled={deleteSubmitting} className="bg-red-600 w-full">
+                  {deleteSubmitting ? "Đang xóa..." : "Xác nhận xóa"}
+                </Button>
+                <DialogClose asChild>
+                  <Button type="button" variant="outline" className="w-full">Hủy</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </CardContent>
       </Card>
     </div>
